@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { login } from "../../services/auth"
 import Cookies from "js-cookie"
+import { useUserStore } from "../../store/user.store"
 
 const LoginForm = () => {
     const [username, setUsername] = useState("")
@@ -32,7 +33,20 @@ const LoginForm = () => {
             Cookies.set("jwt_token", userData.accessToken, { expires: 7 })
         }
 
-        // TODO: Save user data to zustand store
+        // Save user data to zustand store
+        useUserStore.setState({
+            id: userData.id,
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            username: userData.username,
+            gender: userData.gender,
+            image: userData.image,
+            accessToken: userData.accessToken,
+            refreshToken: userData.refreshToken,
+        })
+
+        console.log("User data saved to store:", useUserStore.getState())
 
         setErrorMsg("") // Clear previous error message
     }
