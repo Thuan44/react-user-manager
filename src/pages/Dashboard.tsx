@@ -6,10 +6,10 @@ import { useEffect } from "react"
 
 const Dashboard = () => {
     const user = useUserStore((state: UserStore) => state)
-    const navigate = useNavigate()
     const isLoggedIn = user.id > 0
     const isCheckingUser = user.isCheckingUser
-
+    const navigate = useNavigate()
+    
     useEffect(() => {
         if (isCheckingUser) return
         if (!isLoggedIn) navigate("/login")

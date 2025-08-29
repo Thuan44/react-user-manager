@@ -6,9 +6,9 @@ import type { UserStore } from "../types/user"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
-    const navigate = useNavigate()
     const user = useUserStore((state: UserStore) => state)
     const isLoggedIn = user.id > 0
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (isLoggedIn) {
