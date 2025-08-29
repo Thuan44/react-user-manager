@@ -47,8 +47,6 @@ const LoginForm = () => {
             username: userData.username,
             gender: userData.gender,
             image: userData.image,
-            accessToken: userData.accessToken,
-            refreshToken: userData.refreshToken,
         })
 
         console.log("User data saved to store:", useUserStore.getState())

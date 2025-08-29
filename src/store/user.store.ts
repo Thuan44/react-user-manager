@@ -11,8 +11,10 @@ export const useUserStore = create<UserStore>()(
         username: "",
         gender: "",
         image: "",
+        role: "",
         accessToken: "",
         refreshToken: "",
+        isCheckingUser: true,
         clearUser: () =>
             set(() => ({
                 id: 0,
