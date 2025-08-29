@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/user.store";
-import type { UserStore } from "../types/user";
+import type { UserStore } from "../types/user.type";
 import Cookies from "js-cookie"
     
 const Navbar = () => {
@@ -15,8 +15,8 @@ const Navbar = () => {
     }
 
     return (
-        <nav>
-            <ul className="flex justify-between bg-white px-8 py-6 rounded-full">
+        <nav className="mb-12">
+            <ul className="flex justify-between items-center bg-white px-6 py-4 rounded-full">
                 <li>
                     <Link to="/" className="text-xl font-bold text-gradient">REACT USER MANAGER</Link>
                 </li>
@@ -24,7 +24,7 @@ const Navbar = () => {
                     {isLoggedIn ? (
                         <button className="btn-primary text-xl font-semibold" onClick={logout}>LOGOUT</button>
                     ) : (
-                        <Link to="/login" className="btn-primary text-xl font-semibold">LOGIN</Link>
+                        <Link to="/login" className="btn-primary text-xl font-semibold block">LOGIN</Link>
                     )}
                 </li>
             </ul>

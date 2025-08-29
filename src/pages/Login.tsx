@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import LoginForm from "../components/auth/LoginForm"
 import BaseLayout from "../components/layout/BaseLayout"
 import { useUserStore } from "../store/user.store"
-import type { UserStore } from "../types/user"
+import type { UserStore } from "../types/user.type"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {

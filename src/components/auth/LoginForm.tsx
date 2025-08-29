@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { login } from "../../services/auth"
+import { login } from "../../services/auth.service"
 import Cookies from "js-cookie"
 import { useUserStore } from "../../store/user.store"
 import { useNavigate } from "react-router-dom";

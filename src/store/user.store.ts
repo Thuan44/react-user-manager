@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { UserStore } from "../types/user"
+import type { UserStore } from "../types/user.type"
 import { devtools } from "zustand/middleware"
 
 export const useUserStore = create<UserStore>()(

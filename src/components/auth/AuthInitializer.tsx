@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { checkToken } from "../../services/auth"
+import { checkToken } from "../../services/auth.service"
 import Cookies from "js-cookie"
 import { useUserStore } from "../../store/user.store"
 

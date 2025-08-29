@@ -1,0 +1,43 @@
+import type { User } from "../../types/user.type"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUserTie } from "@fortawesome/free-solid-svg-icons"
+
+const UserItem = ({ user }: { user: User }) => {
+    return (
+        <div className="bg-white/70 rounded-4xl px-6 py-4 grid grid-cols-6 lg:grid-cols-12 gap-y-2 items-center">
+            <div className="col-span-1">
+                <img src={user.image} alt="" className="size-8" />
+            </div>
+            <div className="flex items-center col-span-4 lg:col-span-2 font-semibold">
+                {user.firstName} {user.lastName}
+            </div>
+            <div className="col-span-2 hidden lg:block">
+                <span className="text-[12px] mr-2">aka</span>
+                <span className="font-semibold">{user.username}</span>
+            </div>
+            <div className="col-span-1 ml-auto lg:ml-0">
+                <span className="text-[12px] mr-2">Âge : </span>
+                <span className="font-semibold">{user.age}</span>
+            </div>
+            <div className="col-span-1 lg:hidden"></div>
+            <div className="col-span-4 lg:col-span-5">
+                <span className="text-[12px] mr-2">Email : </span>
+                <span className="font-semibold">
+                    {user.email.length > 20
+                        ? user.email.slice(0, 20) + "..."
+                        : use20email}
+                </span>
+            </div>
+            <div className="flex items-center gap-4">
+                {user.role === "admin" && (
+                    <FontAwesomeIcon
+                        icon={faUserTie}
+                        className="ml-auto text-red-500"
+                    />
+                )}
+            </div>
+        </div>
+    )
+}
+
+export default UserItem
