@@ -2,17 +2,22 @@ import React, { useState } from "react"
 import { login } from "../../services/auth"
 import Cookies from "js-cookie"
 import { useUserStore } from "../../store/user.store"
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
+        setIsLoading(true)
 
         if (!username || !password) {
             setErrorMsg("Please fill in all fields.")
+            setIsLoading(false)
             return
         }
 
@@ -28,7 +33,7 @@ const LoginForm = () => {
             return
         }
 
-        // Save accessToken to cookies and user data to zustand store
+        // Save accessToken to cookies
         if (userData.accessToken) {
             Cookies.set("jwt_token", userData.accessToken, { expires: 7 })
         }
@@ -49,6 +54,11 @@ const LoginForm = () => {
         console.log("User data saved to store:", useUserStore.getState())
 
         setErrorMsg("") // Clear previous error message
+        setIsLoading(false)
+
+        // Redirect to dashboard
+        navigate("/");
+
     }
 
     return (
@@ -75,7 +85,7 @@ const LoginForm = () => {
                     type="submit"
                     className="btn-primary w-[150px] h-[56px] mx-auto"
                 >
-                    Login
+                    {isLoading ? "Loading..." : "Login"}
                 </button>
             </form>
         </div>
