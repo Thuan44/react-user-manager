@@ -2,13 +2,21 @@ import { useEffect } from "react"
 import { checkToken } from "../../services/auth.service"
 import Cookies from "js-cookie"
 import { useUserStore } from "../../store/user.store"
+import { useNavigate } from "react-router-dom"
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+    const navigate = useNavigate()
+
     useEffect(() => {
         const initializeAuth = async () => {
-            const user = await checkToken(Cookies.get("jwt_token"))
+            const token = Cookies.get("jwt_token")
+            if (!token) {
+                useUserStore.setState({ isCheckingUser: false })
+                return
+            }
+            const user = await checkToken(token)
 
-            if (user) {
+            if (user?.id) {
                 useUserStore.setState({
                     id: user.id || 0,
                     email: user.email || "",
@@ -22,8 +30,11 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
                     refreshToken: user.refreshToken || "",
                     isCheckingUser: false,
                 })
+                return
             }
 
+            Cookies.remove("jwt_token")
+            navigate("/login")
         }
         initializeAuth()
     }, [])

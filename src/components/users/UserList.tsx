@@ -7,8 +7,11 @@ const UserList = ({ users }: { users: User[] }) => {
             <h2 className="mb-8">Here is a list of all the users</h2>
             <ul>
                 {users.map((user) => (
-                    <li key={user.id} className="mb-4">
-                       <UserItem user={user} />
+                    <li
+                        key={user.id}
+                        className={users[users.length - 1].id !== user.id ? "mb-4" : ""}
+                    >
+                        <UserItem user={user} />
                     </li>
                 ))}
             </ul>
