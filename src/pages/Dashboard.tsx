@@ -14,13 +14,17 @@ const Dashboard = () => {
     const user = useUserStore((state: UserStore) => state)
     const [users, setUsers] = useState([])
     const [filter, setFilter] = useState({ key: "", value: "" })
+    const [sort, setSort] = useState("")
     const isLoggedIn = user.id > 0
     const isCheckingUser = user.isCheckingUser
     const navigate = useNavigate()
 
     const getListUsers = async () => {
         try {
-            const { users: listUsers } = await indexUsers()
+            const params = {
+                sort,
+            }
+            const { users: listUsers } = await indexUsers(params)
             if (listUsers?.length > 0) setUsers(listUsers)
         } catch (error) {
             console.error("Error fetching users:", error)
@@ -29,10 +33,14 @@ const Dashboard = () => {
 
     const filterUsers = async () => {
         try {
-            const { users: filteredUsers } = await filterlistUsers({
-                key: filter.key,
-                value: filter.value,
-            })
+            const params = {
+                filter: {
+                    key: filter.key,
+                    value: filter.value,
+                },
+                sort,
+            }
+            const { users: filteredUsers } = await filterlistUsers(params)
             if (filteredUsers?.length > 0) setUsers(filteredUsers)
             else setUsers([])
         } catch (error) {
@@ -54,7 +62,7 @@ const Dashboard = () => {
             return
         }
         filterUsers()
-    }, [isCheckingUser, filter])
+    }, [isCheckingUser, filter, sort])
 
     if (isCheckingUser) {
         return (
@@ -77,7 +85,11 @@ const Dashboard = () => {
                     )}
                 </div>
                 <div className="bg-white/40 rounded-4xl px-16 py-12">
-                    <UserFilters filter={filter} onChange={setFilter} />
+                    <UserFilters
+                        filter={filter}
+                        onChange={setFilter}
+                        onSortChange={setSort}
+                    />
                     {users?.length > 0 ? (
                         <UserList users={users} />
                     ) : (

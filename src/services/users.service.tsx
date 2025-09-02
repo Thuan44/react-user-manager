@@ -1,7 +1,9 @@
 const SERVICE = "users"
 
-export const index = async () => {
-    return fetch(`${import.meta.env.VITE_API_URL}/${SERVICE}`)
+export const index = async ({ sort }: { sort: string }) => {
+    return fetch(`${import.meta.env.VITE_API_URL}/${SERVICE}${
+            sort ? `?sortBy=firstName&order=${sort}` : ""
+        }`)
         .then((res) => res.json())
         .catch((error) => {
             console.error("Error fetching users:", error)
@@ -9,8 +11,20 @@ export const index = async () => {
         })
 }
 
-export const filterUsers = async ({key, value}: {key: string, value: string}) => {
-    return fetch(`${import.meta.env.VITE_API_URL}/${SERVICE}/filter?key=${key}&value=${value}`)
+export const filterUsers = async ({
+    filter: { key, value },
+    sort,
+}: {
+    filter: { key: string; value: string }
+    sort: string
+}) => {
+    return fetch(
+        `${
+            import.meta.env.VITE_API_URL
+        }/${SERVICE}/filter?key=${key}&value=${value}${
+            sort ? `&sortBy=firstName&order=${sort}` : ""
+        }`
+    )
         .then((res) => res.json())
         .catch((error) => {
             console.error("Error filtering users:", error)

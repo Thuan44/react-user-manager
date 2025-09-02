@@ -3,14 +3,17 @@ import { useRef, useState, useEffect } from "react"
 const UserFilters = ({
     filter,
     onChange,
+    onSortChange,
 }: {
     filter: { key: string; value: string }
     onChange: React.Dispatch<
         React.SetStateAction<{ key: string; value: string }>
     >
+    onSortChange?: React.Dispatch<React.SetStateAction<string>>
 }) => {
     const [localValue, setLocalValue] = useState(filter.value)
     const [localSelect, setLocalSelect] = useState("")
+    const [sort, setSort] = useState("")
     const debounceRef = useRef<number | null>(null)
 
     useEffect(() => {
@@ -57,6 +60,24 @@ const UserFilters = ({
                 <option value="moderator">Moderator</option>
                 <option value="user">User</option>
             </select>
+            <div className="flex items-center gap-2 ml-auto">
+                Sort by :
+                <select
+                    name="sort"
+                    id="sort"
+                    onChange={
+                        (e) => {
+                            onSortChange?.(e.target.value);
+                            setSort(e.target.value);
+                        }
+                    }
+                    value={sort}
+                >
+                    <option value="">None</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
         </div>
     )
 }
