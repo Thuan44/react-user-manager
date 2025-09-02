@@ -5,7 +5,7 @@ import type { UserStore } from "../types/user.type"
 import { useEffect, useState } from "react"
 import {
     filterUsers as filterlistUsers,
-    index as indexUsers,
+    list as indexUsers,
 } from "../services/users.service"
 import UserList from "../components/users/UserList"
 import UserFilters from "../components/users/UserFilters"

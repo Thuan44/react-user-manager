@@ -1,10 +1,11 @@
 import type { User } from "../../types/user.type"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUserTie } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 const UserItem = ({ user }: { user: User }) => {
     return (
-        <div className="bg-white/70 rounded-4xl px-6 py-4 grid grid-cols-6 lg:grid-cols-12 gap-y-2 items-center">
+        <Link to={`/users/${user.id}`} className="bg-white/70 rounded-4xl px-6 py-4 grid grid-cols-6 lg:grid-cols-12 gap-y-2 items-center transition-all duration-200 hover:bg-white hover:shadow-md">
             <div className="col-span-1">
                 <img src={user.image} alt="" className="size-8" />
             </div>
@@ -36,7 +37,7 @@ const UserItem = ({ user }: { user: User }) => {
                     />
                 )}
             </div>
-        </div>
+        </Link>
     )
 }
 
