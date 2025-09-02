@@ -1,9 +1,9 @@
 import type { User } from "../../types/user.type"
 import UserItem from "./UserItem"
 
-const UserList = ({ users }: { users: User[] }) => {
+const UserList = ({ users }: { users: User[]}) => {
     return (
-    <div className="bg-white/40 rounded-4xl p-16">
+    <div>
             <h2 className="mb-8">Here is a list of all the users</h2>
             <ul>
                 {users.map((user) => (

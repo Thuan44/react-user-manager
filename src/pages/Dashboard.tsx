@@ -3,33 +3,61 @@ import BaseLayout from "../components/layout/BaseLayout"
 import { useUserStore } from "../store/user.store"
 import type { UserStore } from "../types/user.type"
 import { useEffect, useState } from "react"
-import { index as indexUsers } from "../services/users.service"
+import {
+    filterUsers as filterlistUsers,
+    index as indexUsers,
+} from "../services/users.service"
 import UserList from "../components/users/UserList"
+import UserFilters from "../components/users/UserFilters"
 
 const Dashboard = () => {
     const user = useUserStore((state: UserStore) => state)
     const [users, setUsers] = useState([])
+    const [filter, setFilter] = useState({ key: "", value: "" })
     const isLoggedIn = user.id > 0
     const isCheckingUser = user.isCheckingUser
     const navigate = useNavigate()
 
+    const getListUsers = async () => {
+        try {
+            const { users: listUsers } = await indexUsers()
+            if (listUsers?.length > 0) setUsers(listUsers)
+        } catch (error) {
+            console.error("Error fetching users:", error)
+        }
+    }
+
+    // Check user authentication
     useEffect(() => {
         if (isCheckingUser) return
         if (!isLoggedIn) navigate("/login")
     }, [isLoggedIn, isCheckingUser])
 
+    // Fetch or filter user list
     useEffect(() => {
-        if (isCheckingUser) return
-        const getListUsers = async () => {
-            try {
-                const { users: listUsers } = await indexUsers()
-                if (listUsers?.length > 0) setUsers(listUsers)
-            } catch (error) {
-                console.error("Error fetching users:", error)
-            }
+        if (!filter.key || !filter.value) {
+            if (isCheckingUser) return
+            getListUsers()
+            return
         }
-        getListUsers()
-    }, [isCheckingUser])
+        try {
+            const filterUsers = async () => {
+                try {
+                    const { users: filteredUsers } = await filterlistUsers({
+                        key: filter.key,
+                        value: filter.value,
+                    })
+                    if (filteredUsers?.length > 0) setUsers(filteredUsers)
+                    else setUsers([])
+                } catch (error) {
+                    console.error("Error filtering users:", error)
+                }
+            }
+            filterUsers()
+        } catch (error) {
+            console.error("Error filtering users:", error)
+        }
+    }, [isCheckingUser, filter])
 
     if (isCheckingUser) {
         return (
@@ -51,11 +79,14 @@ const Dashboard = () => {
                         <p>Please log in to access your dashboard.</p>
                     )}
                 </div>
-                {users?.length > 0 ? (
-                    <UserList users={users} />
-                ) : (
-                    <p>No users found.</p>
-                )}
+                <div className="bg-white/40 rounded-4xl px-16 py-12">
+                    <UserFilters filter={filter} onChange={setFilter} />
+                    {users?.length > 0 ? (
+                        <UserList users={users} />
+                    ) : (
+                        <p>No users found.</p>
+                    )}
+                </div>
             </div>
         </BaseLayout>
     )
