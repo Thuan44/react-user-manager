@@ -27,6 +27,19 @@ const Dashboard = () => {
         }
     }
 
+    const filterUsers = async () => {
+        try {
+            const { users: filteredUsers } = await filterlistUsers({
+                key: filter.key,
+                value: filter.value,
+            })
+            if (filteredUsers?.length > 0) setUsers(filteredUsers)
+            else setUsers([])
+        } catch (error) {
+            console.error("Error filtering users:", error)
+        }
+    }
+
     // Check user authentication
     useEffect(() => {
         if (isCheckingUser) return
@@ -35,28 +48,12 @@ const Dashboard = () => {
 
     // Fetch or filter user list
     useEffect(() => {
+        if (isCheckingUser) return
         if (!filter.key || !filter.value) {
-            if (isCheckingUser) return
             getListUsers()
             return
         }
-        try {
-            const filterUsers = async () => {
-                try {
-                    const { users: filteredUsers } = await filterlistUsers({
-                        key: filter.key,
-                        value: filter.value,
-                    })
-                    if (filteredUsers?.length > 0) setUsers(filteredUsers)
-                    else setUsers([])
-                } catch (error) {
-                    console.error("Error filtering users:", error)
-                }
-            }
-            filterUsers()
-        } catch (error) {
-            console.error("Error filtering users:", error)
-        }
+        filterUsers()
     }, [isCheckingUser, filter])
 
     if (isCheckingUser) {
