@@ -25,14 +25,14 @@ const UserItem = ({ user }: { user: User }) => {
                 <span className="font-semibold">
                     {user.email.length > 20
                         ? user.email.slice(0, 20) + "..."
-                        : use20email}
+                        : user.email}
                 </span>
             </div>
             <div className="flex items-center gap-4">
-                {user.role === "admin" && (
+                {['admin', 'moderator'].includes(user.role) && (
                     <FontAwesomeIcon
                         icon={faUserTie}
-                        className="ml-auto text-red-500"
+                        className={`ml-auto ${user.role === 'moderator' ? 'text-blue-500' : 'text-red-500'}`}
                     />
                 )}
             </div>

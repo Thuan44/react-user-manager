@@ -10,13 +10,20 @@ const UserFilters = ({
     >
 }) => {
     const [localValue, setLocalValue] = useState(filter.value)
+    const [localSelect, setLocalSelect] = useState("")
     const debounceRef = useRef<number | null>(null)
 
     useEffect(() => {
-        setLocalValue(filter.value)
+        if (filter?.key === "username") {
+            setLocalValue(filter.value)
+            setLocalSelect("")
+        }
+        if (filter?.key === "role") {
+            setLocalValue("")
+        }
     }, [filter.value])
 
-    const handleChangeAfterDelay = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setLocalValue(value)
         if (debounceRef.current) window.clearTimeout(debounceRef.current)
@@ -25,15 +32,31 @@ const UserFilters = ({
         }, 500)
     }
 
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setLocalSelect(e.target.value)
+        onChange({ key: "role", value: e.target.value })
+    }
+
     return (
         <div className="bg-white/90 mb-8 rounded-full p-4 flex items-center gap-4">
             <input
                 type="text"
                 placeholder="Search username..."
                 className="border border-gray-300 p-2 w-[300px]"
-                onChange={handleChangeAfterDelay}
+                onChange={handleChange}
                 value={localValue}
             />
+            <select
+                name="role"
+                id="role"
+                onChange={handleSelectChange}
+                value={localSelect}
+            >
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="moderator">Moderator</option>
+                <option value="user">User</option>
+            </select>
         </div>
     )
 }
